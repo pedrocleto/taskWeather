@@ -1,0 +1,42 @@
+{
+  "name": "taskweather",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "start": "webpack-dev-server --inline --progress --host 0.0.0.0",
+    "build": "rimraf build && webpack --config config/webpack.prod.js --progress --profile --bail",
+    "test": "karma start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pedrocleto/taskWeather.git"
+  },
+  "author": "PCM",
+  "license": "ISC",
+  "homepage": "https://github.com/pedrocleto/taskWeather",
+  "dependencies": {
+    "jquery": "^3.1.1",
+    "rxjs": "5.0.0-beta.6"
+  },
+  "devDependencies": {
+    "babel-core": "^6.18.2",
+    "babel-loader": "^6.2.7",
+    "babel-preset-es2015": "^6.18.0",
+    "css-loader": "^0.25.0",
+    "extract-text-webpack-plugin": "^1.0.1",
+    "file-loader": "^0.9.0",
+    "html-webpack-plugin": "^2.24.1",
+    "jasmine-core": "^2.5.2",
+    "karma": "^0.13.22",
+    "karma-jasmine": "^0.3.8",
+    "karma-phantomjs-launcher": "^1.0.0",
+    "karma-sourcemap-loader": "^0.3.7",
+    "karma-webpack": "^1.7.0",
+    "node-sass": "^3.10.1",
+    "rimraf": "^2.5.4",
+    "sass-loader": "^4.0.2",
+    "webpack": "^1.13.3",
+    "webpack-dev-server": "^1.16.2",
+    "webpack-merge": "^0.9.0"
+  }
+}
