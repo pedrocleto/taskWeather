@@ -23,19 +23,20 @@ class App  {
   }
 
   searchKeyUp(event){
-    if (event.keyCode == 13 && this.hasOwnProperty('textfield')) {
-        this.search(event).bind(this);
+    if (event.keyCode == 13 && this.search) {
+        this.search(event);
     }
   }
   search(event){
     let cityCountry=this.textfield.value;
-
+    this.clearList();
     if(cityCountry){
       this.get5day(cityCountry).then(function(result){
           this.createTable(result);
-      }.bind(this),((error)=>{
-
-      }));
+      }.bind(this),function(error){
+        this.list.insertAdjacentHTML('afterbegin', "<div>City not Found</div>");
+        this.list.classList.remove("loading");
+      }.bind(this));
     }
       
   }
@@ -67,15 +68,14 @@ class App  {
           let city = values.city;
           strEl += "<div>City:  "+city.name+","+city.country+"</div>";
           strEl += "<div>Date:  "+obj.dt_txt+" </div>";
-          strEl += "<div>Min Temperature:  "+main.temp_min+"ºC </div>";
-          strEl += "<div>Max Temperature:  "+main.temp_max+"ºC </div>";
-          strEl += "<div>Weather description:  "+weather.description+" </div>";
+          strEl += "<div>Min:  "+main.temp_min+"ºC </div>";
+          strEl += "<div>Max:  "+main.temp_max+"ºC </div>";
+          strEl += "<div>Weather:  "+weather.description+" </div>";
           strEl += "<div>Humidity:  "+main.humidity+" %</div>";
           strEl += "<div>Wind Speed:  "+wind.speed+" </div>";
           strEl += "</div>";
           template.push(strEl);
       });
-
       this.list.insertAdjacentHTML('afterbegin',template.join("\n"));
 
       this.list.classList.remove("loading");
