@@ -32,7 +32,7 @@ class App  {
     this.clearList();
     if(cityCountry){
       this.get5day(cityCountry).then(function(result){
-          this.createTable(result);
+          this.createTable(this.processResult(result),result);
       }.bind(this),function(error){
         this.list.insertAdjacentHTML('afterbegin', "<div>City not Found</div>");
         this.list.classList.remove("loading");
@@ -52,30 +52,53 @@ class App  {
       });
   }
 
-   createTable(values){    
+  processResult(result){
+    let listValues = result.list;
+    let values = {};
+    listValues.forEach((obj) => {
+      let date = new Date(obj.dt_txt);
+      if(!values[date.toDateString()]){
+        values[date.toDateString()]=[obj];
+      }else{
+        values[date.toDateString()].push(obj);
+      }
+    });
+    return values;
+  }
+   createTable(values, mainObject){    
     this.clearList();
 
     console.log("creating...");
 
     if(values!==null){
       let template = [];
-      let listValues = values.list;
-      listValues.forEach((obj) => {
-        let strEl ="<div class=\"weatherContent\" >";
-          let main = obj.main;
-          let weather = obj.weather[0];
-          let wind =  obj.wind;
-          let city = values.city;
-          strEl += "<div>City:  "+city.name+","+city.country+"</div>";
-          strEl += "<div>Date:  "+obj.dt_txt+" </div>";
-          strEl += "<div>Min:  "+main.temp_min+"ºC </div>";
-          strEl += "<div>Max:  "+main.temp_max+"ºC </div>";
-          strEl += "<div>Weather:  "+weather.description+" </div>";
-          strEl += "<div>Humidity:  "+main.humidity+" %</div>";
-          strEl += "<div>Wind Speed:  "+wind.speed+" </div>";
-          strEl += "</div>";
-          template.push(strEl);
-      });
+      for (let key in values){
+          let objects = values[key];
+
+          let strElDay ="<div class=\"weatherContentDay\" >";
+          strElDay += "<div>"+key+" </div>";
+
+          objects.forEach((obj)=>{
+            let date = new Date(obj.dt_txt);
+            let strEl ="<div class=\"weatherContent\" >";
+            let main = obj.main;
+            let weather = obj.weather[0];
+            let wind =  obj.wind;
+            let city = mainObject.city;
+            strElDay+=strEl;
+            strElDay += "<div>"+date.toLocaleTimeString()+" </div>";
+            strElDay += "<div>Min:  "+main.temp_min+"ºC </div>";
+            strElDay += "<div>Max:  "+main.temp_max+"ºC </div>";
+            strElDay += "<div>"+weather.description+" </div>";
+            strElDay += "<div>Humidity:  "+main.humidity+" %</div>";
+            strElDay += "<div>Wind Speed:  "+wind.speed+" </div>";
+            strElDay += "</div>";
+          });
+          strElDay += "</div>"
+
+          template.push(strElDay);
+      }
+      
       this.list.insertAdjacentHTML('afterbegin',template.join("\n"));
 
       this.list.classList.remove("loading");

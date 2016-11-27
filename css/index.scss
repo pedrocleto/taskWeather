@@ -29,14 +29,22 @@ div.buttonContainer{
 
 div.weatherContainer{
   @extend .container;
+  display: flex!important;
+  flex-direction: row;
   padding-top: 20px;
+  justify-content: center;
+}
+
+div.weatherContentDay{
+  display: flex!important;
+  flex-direction: column;
 }
 
 div.weatherContent{
   display: block;
   padding: 5px;
+  width:200px;
   border: solid 1px teal;
-  width:35%;
   margin: 0 auto;
   color:gray;
 }
